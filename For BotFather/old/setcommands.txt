@@ -1,0 +1,7 @@
+start - Basic information
+help - Basic information
+gan - How to use the bot in GAN mode
+nst - How to use the bot in NST mode
+nsttransfer - Start style transfer in NST mode
+gantransfer - Start style transfer in GAN mode
+ganstyles - Show available styles in GAN mode
