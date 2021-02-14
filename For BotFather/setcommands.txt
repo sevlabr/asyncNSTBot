@@ -1,0 +1,4 @@
+start - Greeting and intro information
+help - Intro information
+menu - Show menu
+quality - Specify your own output resolution

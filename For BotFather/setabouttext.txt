@@ -1,0 +1,1 @@
+Style transfer from one picture to another using vanilla NST and GAN approaches.

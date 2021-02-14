@@ -1,0 +1,1 @@
+This bot can be used for style transfer using vanilla Neural Style Transfer or Generative Adversarial Nets approaches. To proceed write /start
