@@ -232,40 +232,27 @@ async def ask_for_transfer_keyboard(mode, chosen_photo, output_size, prev_lvl):
 
 
 class GANStylesKeyboardMaker(object):
-    def __init__(self, lvl, prev_lvl, next_lvl, next_2_lvl, l_text, m_text, r_text, chosen_photo):
+    def __init__(self, lvl, prev_lvl, next_lvl, next_2_lvl, chosen_photo):
         self.lvl = lvl
         self.prev_lvl = prev_lvl
         self.next_lvl = next_lvl
         self.next_2_lvl = next_2_lvl
-        self.l_text = l_text
-        self.m_text = m_text
-        self.r_text = r_text
         self.chosen_photo = chosen_photo
 
     async def make(self):
         CURRENT_LEVEL = self.lvl
         markup = InlineKeyboardMarkup()
 
-        left_button_text = self.l_text
-        middle_button_text = self.m_text
-        right_button_text = self.r_text
-
-        left_callback_data = make_callback_data(level=CURRENT_LEVEL)
-        middle_callback_data = make_callback_data(level=self.next_lvl)
-        right_callback_data = make_callback_data(level=self.next_2_lvl)
-
         select_callback_data = make_callback_data(level=24, mode="gan",
                                                   chosen_photo=self.chosen_photo,
                                                   prev_lvl=CURRENT_LEVEL)
 
         markup.row(
-            InlineKeyboardButton(text=left_button_text, callback_data=left_callback_data),
-            InlineKeyboardButton(text=middle_button_text, callback_data=middle_callback_data),
-            InlineKeyboardButton(text=right_button_text, callback_data=right_callback_data)
+            InlineKeyboardButton(text="Previous photo", callback_data=make_callback_data(level=self.prev_lvl)),
+            InlineKeyboardButton(text="Next photo", callback_data=make_callback_data(level=self.next_lvl))
         )
         markup.row(
-            InlineKeyboardButton(text="Select", callback_data=select_callback_data),
-            InlineKeyboardButton(text="Previous photo", callback_data=make_callback_data(level=self.prev_lvl))
+            InlineKeyboardButton(text="Select", callback_data=select_callback_data)
         )
         markup.row(
             InlineKeyboardButton(text="Cancel", callback_data=make_callback_data(level=0)),

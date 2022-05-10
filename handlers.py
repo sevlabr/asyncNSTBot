@@ -1,6 +1,6 @@
 from typing import Union
 
-from aiogram.types import Message, CallbackQuery
+from aiogram.types import Message, CallbackQuery, InputMediaPhoto
 from loader import dp
 from aiogram.dispatcher.filters import Command
 
@@ -40,13 +40,17 @@ class GANStylesDemonstrator(object):
 
     async def show(self, callback: CallbackQuery, **kwargs):
         markup = await self.markup_maker()
+        
         with open(FOLDER_PATH + self.photo_name, 'rb') as photo:
-            await callback.message.reply_photo(
-                photo=photo,
-                caption=MAIN_TEXT,
-                reply_markup=markup,
-                reply=False
-            )
+            if 'photo' in callback.message:
+                await callback.message.edit_media(media=InputMediaPhoto(media=photo, caption = MAIN_TEXT), reply_markup=markup)
+            else:
+                await callback.message.reply_photo(
+                    photo=photo,
+                    caption=MAIN_TEXT,
+                    reply_markup=markup,
+                    reply=False
+                )
 
 
 @dp.message_handler(commands=['help'])
@@ -233,7 +237,6 @@ async def navigate(call: CallbackQuery, callback_data: dict):
                 "candy.jpg",
                 GANStylesKeyboardMaker(
                     lvl=3, prev_lvl=23, next_lvl=4, next_2_lvl=5,
-                    l_text="✅ Candy", m_text="Composition VII", r_text="Escher sphere",
                     chosen_photo="candy.jpg"
                 ).make
             ).show,
@@ -241,7 +244,6 @@ async def navigate(call: CallbackQuery, callback_data: dict):
                 "composition_vii.jpg",
                 GANStylesKeyboardMaker(
                     lvl=4, prev_lvl=3, next_lvl=5, next_2_lvl=6,
-                    l_text="✅ Composition VII", m_text="Escher sphere", r_text="Feathers",
                     chosen_photo="composition_vii.jpg"
                 ).make
             ).show,
@@ -249,7 +251,6 @@ async def navigate(call: CallbackQuery, callback_data: dict):
                 "escher_sphere.jpg",
                 GANStylesKeyboardMaker(
                     lvl=5, prev_lvl=4, next_lvl=6, next_2_lvl=7,
-                    l_text="✅ Escher sphere", m_text="Feathers", r_text="Frida\nKahlo",
                     chosen_photo="escher_sphere.jpg"
                 ).make
             ).show,
@@ -257,7 +258,6 @@ async def navigate(call: CallbackQuery, callback_data: dict):
                 "feathers.jpg",
                 GANStylesKeyboardMaker(
                     lvl=6, prev_lvl=5, next_lvl=7, next_2_lvl=8,
-                    l_text="✅ Feathers", m_text="Frida\nKahlo", r_text="La Muse",
                     chosen_photo="feathers.jpg"
                 ).make
             ).show,
@@ -265,7 +265,6 @@ async def navigate(call: CallbackQuery, callback_data: dict):
                 "frida_kahlo.jpg",
                 GANStylesKeyboardMaker(
                     lvl=7, prev_lvl=6, next_lvl=8, next_2_lvl=9,
-                    l_text="✅ Frida\nKahlo", m_text="La Muse", r_text="Mosaic",
                     chosen_photo="frida_kahlo.jpg"
                 ).make
             ).show,
@@ -273,7 +272,6 @@ async def navigate(call: CallbackQuery, callback_data: dict):
                 "la_muse.jpg",
                 GANStylesKeyboardMaker(
                     lvl=8, prev_lvl=7, next_lvl=9, next_2_lvl=10,
-                    l_text="✅ La Muse", m_text="Mosaic", r_text="Ancient\nmosaic",
                     chosen_photo="la_muse.jpg"
                 ).make
             ).show,
@@ -281,7 +279,6 @@ async def navigate(call: CallbackQuery, callback_data: dict):
                 "mosaic.jpg",
                 GANStylesKeyboardMaker(
                     lvl=9, prev_lvl=8, next_lvl=10, next_2_lvl=11,
-                    l_text="✅ Mosaic", m_text="Ancient\nmosaic", r_text="Pencil",
                     chosen_photo="mosaic.jpg"
                 ).make
             ).show,
@@ -289,7 +286,6 @@ async def navigate(call: CallbackQuery, callback_data: dict):
                 "mosaic_ducks_massimo.jpg",
                 GANStylesKeyboardMaker(
                     lvl=10, prev_lvl=9, next_lvl=11, next_2_lvl=12,
-                    l_text="✅ Ancient\nmosaic", m_text="Pencil", r_text="Picasso\nself-portrait",
                     chosen_photo="mosaic_ducks_massimo.jpg"
                 ).make
             ).show,
@@ -297,7 +293,6 @@ async def navigate(call: CallbackQuery, callback_data: dict):
                 "pencil.jpg",
                 GANStylesKeyboardMaker(
                     lvl=11, prev_lvl=10, next_lvl=12, next_2_lvl=13,
-                    l_text="✅ Pencil", m_text="Picasso\nself-portrait", r_text="Afremov\nRain princess",
                     chosen_photo="pencil.jpg"
                 ).make
             ).show,
@@ -305,8 +300,6 @@ async def navigate(call: CallbackQuery, callback_data: dict):
                 "picasso_selfport1907.jpg",
                 GANStylesKeyboardMaker(
                     lvl=12, prev_lvl=11, next_lvl=13, next_2_lvl=14,
-                    l_text="✅ Picasso\nself-portrait", m_text="Afremov\nRain princess",
-                    r_text="Robert Delaunay\nportrait",
                     chosen_photo="picasso_selfport1907.jpg"
                 ).make
             ).show,
@@ -314,8 +307,6 @@ async def navigate(call: CallbackQuery, callback_data: dict):
                 "rain_princess.jpg",
                 GANStylesKeyboardMaker(
                     lvl=13, prev_lvl=12, next_lvl=14, next_2_lvl=15,
-                    l_text="✅ Afremov\nRain princess", m_text="Robert Delaunay\nportrait",
-                    r_text="Picasso\nSeated Nude",
                     chosen_photo="rain_princess.jpg"
                 ).make
             ).show,
@@ -323,8 +314,6 @@ async def navigate(call: CallbackQuery, callback_data: dict):
                 "RDelaunayPortrait.jpg",
                 GANStylesKeyboardMaker(
                     lvl=14, prev_lvl=13, next_lvl=15, next_2_lvl=16,
-                    l_text="✅ Robert Delaunay\nportrait", m_text="Picasso\nSeated Nude",
-                    r_text="Turner\nShipwreck",
                     chosen_photo="RDelaunayPortrait.jpg"
                 ).make
             ).show,
@@ -332,8 +321,6 @@ async def navigate(call: CallbackQuery, callback_data: dict):
                 "seated-nude.jpg",
                 GANStylesKeyboardMaker(
                     lvl=15, prev_lvl=14, next_lvl=16, next_2_lvl=17,
-                    l_text="✅ Picasso\nSeated Nude", m_text="Turner\nShipwreck",
-                    r_text="Starry night",
                     chosen_photo="seated-nude.jpg"
                 ).make
             ).show,
@@ -341,8 +328,6 @@ async def navigate(call: CallbackQuery, callback_data: dict):
                 "shipwreck.jpg",
                 GANStylesKeyboardMaker(
                     lvl=16, prev_lvl=15, next_lvl=17, next_2_lvl=18,
-                    l_text="✅ Turner\nShipwreck", m_text="Starry night",
-                    r_text="Stars",
                     chosen_photo="shipwreck.jpg"
                 ).make
             ).show,
@@ -350,8 +335,6 @@ async def navigate(call: CallbackQuery, callback_data: dict):
                 "starry_night.jpg",
                 GANStylesKeyboardMaker(
                     lvl=17, prev_lvl=16, next_lvl=18, next_2_lvl=19,
-                    l_text="✅ Starry night", m_text="Stars",
-                    r_text="Jackson Pollock\nGray Painting",
                     chosen_photo="starry_night.jpg"
                 ).make
             ).show,
@@ -359,8 +342,6 @@ async def navigate(call: CallbackQuery, callback_data: dict):
                 "stars2.jpg",
                 GANStylesKeyboardMaker(
                     lvl=18, prev_lvl=17, next_lvl=19, next_2_lvl=20,
-                    l_text="✅ Stars", m_text="Jackson Pollock\nGray Painting",
-                    r_text="Munch\nThe Scream",
                     chosen_photo="stars2.jpg"
                 ).make
             ).show,
@@ -368,8 +349,6 @@ async def navigate(call: CallbackQuery, callback_data: dict):
                 "strip.jpg",
                 GANStylesKeyboardMaker(
                     lvl=19, prev_lvl=18, next_lvl=20, next_2_lvl=21,
-                    l_text="✅ Jackson Pollock\nGray Painting", m_text="Munch\nThe Scream",
-                    r_text="Udnie",
                     chosen_photo="strip.jpg"
                 ).make
             ).show,
@@ -377,8 +356,6 @@ async def navigate(call: CallbackQuery, callback_data: dict):
                 "the_scream.jpg",
                 GANStylesKeyboardMaker(
                     lvl=20, prev_lvl=19, next_lvl=21, next_2_lvl=22,
-                    l_text="✅ Munch\nThe Scream", m_text="Udnie",
-                    r_text="The Wave",
                     chosen_photo="the_scream.jpg"
                 ).make
             ).show,
@@ -386,8 +363,6 @@ async def navigate(call: CallbackQuery, callback_data: dict):
                 "udnie.jpg",
                 GANStylesKeyboardMaker(
                     lvl=21, prev_lvl=20, next_lvl=22, next_2_lvl=23,
-                    l_text="✅ Udnie", m_text="The Wave",
-                    r_text="Matisse\nWoman with a Hat",
                     chosen_photo="udnie.jpg"
                 ).make
             ).show,
@@ -395,8 +370,6 @@ async def navigate(call: CallbackQuery, callback_data: dict):
                 "wave.jpg",
                 GANStylesKeyboardMaker(
                     lvl=22, prev_lvl=21, next_lvl=23, next_2_lvl=3,
-                    l_text="✅ The Wave", m_text="Matisse\nWoman with a Hat",
-                    r_text="Candy",
                     chosen_photo="wave.jpg"
                 ).make
             ).show,
@@ -404,8 +377,6 @@ async def navigate(call: CallbackQuery, callback_data: dict):
                 "woman-with-hat-matisse.jpg",
                 GANStylesKeyboardMaker(
                     lvl=23, prev_lvl=22, next_lvl=3, next_2_lvl=4,
-                    l_text="✅ Matisse\nWoman with a Hat", m_text="Candy",
-                    r_text="Composition VII",
                     chosen_photo="woman-with-hat-matisse.jpg"
                 ).make
             ).show,
