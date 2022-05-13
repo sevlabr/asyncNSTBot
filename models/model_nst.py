@@ -183,6 +183,17 @@ class Model:
         optimizer = optim.LBFGS([input_img.requires_grad_()])
         return optimizer
 
+    def clip_gradient(self, optimizer, grad_clip):
+    	"""
+    	Clips gradients computed during backpropagation to avoid explosion of gradients.
+    	:param optimizer: optimizer with the gradients to be clipped
+    	:param grad_clip: clip value
+    	"""
+    	for group in optimizer.param_groups:
+    	    for param in group['params']:
+                if param.grad is not None:
+                    param.grad.data.clamp_(-grad_clip, grad_clip)
+
     async def run_style_transfer(self, content_path, style_path, to_img=False, time_lim=15*60,
                                  num_steps=500, style_weight=100000, content_weight=1, callback=None):
 
@@ -240,6 +251,8 @@ class Model:
 
                 loss = style_score + content_score
                 loss.backward()
+                
+                self.clip_gradient(optimizer, 1.0)
 
                 run[0] += 1
                 if run[0] % 50 == 0:
